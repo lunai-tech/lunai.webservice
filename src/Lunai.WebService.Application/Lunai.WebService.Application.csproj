@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lunai.WebService.Domain\Lunai.WebService.Domain.csproj" />
+    <ProjectReference Include="..\Lunai.WebService.Infrastructure.Data.MongoDB\Lunai.WebService.Infrastructure.Data.MongoDB.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Validations\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+</Project>

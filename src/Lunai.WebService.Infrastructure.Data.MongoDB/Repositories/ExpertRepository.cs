@@ -12,24 +12,37 @@ namespace Lunai.WebService.Infrastructure.Data.MongoDB.Repositories
 {
     public class ExpertRepository : IExpertRepository
     {
-        protected readonly MongoContext _context;
+        protected readonly IMongoContext _context;
         protected readonly IMongoCollection<ExpertDocument> DbSet;
 
-        protected ExpertRepository(MongoContext context)
+        public ExpertRepository(IMongoContext context)
         {
             _context = context;
             DbSet = _context.GetCollection<ExpertDocument>("Experts");
         }
 
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
         public async Task<IEnumerable<ExpertDocument>> GetAll()
         {
-            var data = await DbSet.FindAsync(Builders<ExpertDocument>.Filter.Empty);
-            return data.ToList();
+            try
+            {
+                var data = await DbSet.FindAsync(Builders<ExpertDocument>.Filter.Empty);
+                return data.ToList();    
+            }
+            catch (System.Exception ex)
+            {
+                var teste = ex.Message;
+                throw;
+            }
         }
 
         public async Task<ExpertDocument> GetById(string idExpert)
         {
-            var data = await DbSet.FindAsync(Builders<ExpertDocument>.Filter.Eq("_id", idExpert));
+            var data = await DbSet.FindAsync(x => x.Id == idExpert);
             return data.FirstOrDefault();
         }
     }

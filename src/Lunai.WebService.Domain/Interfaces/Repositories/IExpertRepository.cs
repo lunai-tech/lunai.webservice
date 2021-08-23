@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lunai.WebService.Domain.Interfaces.Repositories
 {
-    public interface IExpertRepository
+    public interface IExpertRepository : IDisposable
     {
         Task<ExpertDocument> GetById(string idExpert);
 

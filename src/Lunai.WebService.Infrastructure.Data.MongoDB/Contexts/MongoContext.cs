@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Lunai.WebService.Infrastructure.Data.MongoDB.Contexts
 {
-    public class MongoContext
+    public class MongoContext : IMongoContext
     {
         private IMongoDatabase Database { get; set; }
         
@@ -23,12 +23,9 @@ namespace Lunai.WebService.Infrastructure.Data.MongoDB.Contexts
         {
             // Every command will be stored and it'll be processed at SaveChanges
             _commands = new List<Func<Task>>();
-
-            // Configure mongo (You can inject the config, just to simplify)
-            MongoClient = new MongoClient(Environment.GetEnvironmentVariable("MONGOCONNECTION") ?? configuration.GetSection("MongoSettings").GetSection("Connection").Value);
-
-            Database = MongoClient.GetDatabase(Environment.GetEnvironmentVariable("DATABASENAME") ?? configuration.GetSection("MongoSettings").GetSection("DatabaseName").Value);
-
+            var settings = MongoClientSettings.FromConnectionString(Environment.GetEnvironmentVariable("MONGOCONNECTION") ?? configuration.GetSection("MongoSettings").GetSection("Connection").Value.ToString());
+            MongoClient = new MongoClient(settings);
+            Database = MongoClient.GetDatabase(Environment.GetEnvironmentVariable("MONGODATABASE") ?? configuration.GetSection("MongoSettings").GetSection("DatabaseName").Value.ToString());
         }
 
         public async Task<int> SaveChanges()

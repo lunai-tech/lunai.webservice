@@ -44,13 +44,16 @@ namespace Lunai.WebService.Domain.Entities.MongoDocuments.ExpertDocuments
         [BsonElement("price_hour")]
         public decimal PriceHour { get; set; }
 
-        [BsonElement("Adrress")]
+        [BsonElement("address")]
         public Address AddressExpert { get; set; }
 
         [BsonElement("skills")]
         public List<string> Skills { get; set; }
 
         [BsonElement("jobs")]
-        public JobsExperts Jobs { get; set; }
+        public List<JobsExperts> Jobs { get; set; }
+
+        [BsonElement("status")]
+        public string Status { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Lunai.WebService.Domain.Entities.MongoDocuments.ExpertDocuments;
+using Lunai.WebService.Domain.Interfaces.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,23 +19,19 @@ namespace Lunai.WebService.WebApi.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private readonly IExpertRepository _expertRepository;
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IExpertRepository expertRepository)
         {
             _logger = logger;
+            _expertRepository = expertRepository;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<ExpertDocument>> GetAsync()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            var tes = await _expertRepository.GetAll();
+
+            return tes;
         }
     }
 }

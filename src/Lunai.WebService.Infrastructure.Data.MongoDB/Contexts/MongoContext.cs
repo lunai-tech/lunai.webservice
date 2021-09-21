@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Lunai.WebService.Domain.Interfaces.Context;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -46,12 +47,12 @@ namespace Lunai.WebService.Infrastructure.Data.MongoDB.Contexts
 
         public IMongoCollection<T> GetCollection<T>(string name) => Database.GetCollection<T>(name);
 
+        public void AddCommand(Func<Task> func) => _commands.Add(func);
+
         public void Dispose()
         {
             Session?.Dispose();
             GC.SuppressFinalize(this);
         }
-
-        public void AddCommand(Func<Task> func) => _commands.Add(func);
     }
 }

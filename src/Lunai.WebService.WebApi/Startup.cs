@@ -30,7 +30,7 @@ namespace Lunai.WebService.WebApi
 
             //DI - Mongo and Repositories
             services.AddScoped<IMongoContext, MongoContext>();
-            services.AddScoped<IExpertRepository,ExpertRepository>();
+            services.AddScoped<IExpertRepository, ExpertRepository>();
             services.AddTransient<IExpertService, ExpertService>();
 
             services.AddControllers();
@@ -46,8 +46,6 @@ namespace Lunai.WebService.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Lunai WebService v1"));
             }
 
             app.UseHttpsRedirection();
@@ -56,6 +54,9 @@ namespace Lunai.WebService.WebApi
 
             app.UseAuthorization();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Lunai WebService v1"));
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

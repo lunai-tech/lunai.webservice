@@ -1,19 +1,15 @@
+using Lunai.WebService.Application.Interfaces;
+using Lunai.WebService.Application.Services;
+using Lunai.WebService.Domain.Interfaces.Context;
 using Lunai.WebService.Domain.Interfaces.Repositories;
 using Lunai.WebService.Infrastructure.Data.MongoDB.Contexts;
 using Lunai.WebService.Infrastructure.Data.MongoDB.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Lunai.WebService.WebApi
 {
@@ -33,13 +29,14 @@ namespace Lunai.WebService.WebApi
             services.AddSingleton(Configuration);
 
             //DI - Mongo and Repositories
-            services.AddScoped<IMongoContext,MongoContext>();
-            services.AddScoped<IExpertRepository,ExpertRepository>();
+            services.AddScoped<IMongoContext, MongoContext>();
+            services.AddScoped<IExpertRepository, ExpertRepository>();
+            services.AddTransient<IExpertService, ExpertService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Lunai.WebService.WebApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Lunai WebService", Version = "v1" });
             });
         }
 
@@ -49,8 +46,6 @@ namespace Lunai.WebService.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Lunai.WebService.WebApi v1"));
             }
 
             app.UseHttpsRedirection();
@@ -59,6 +54,9 @@ namespace Lunai.WebService.WebApi
 
             app.UseAuthorization();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Lunai WebService v1"));
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

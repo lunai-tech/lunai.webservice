@@ -21,6 +21,7 @@ namespace Lunai.WebService.WebApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://*:" + Environment.GetEnvironmentVariable("PORT")); 
                 });
     }
 }
